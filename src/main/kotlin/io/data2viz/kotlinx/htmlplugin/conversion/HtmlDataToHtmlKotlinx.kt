@@ -136,7 +136,7 @@ fun Collection<HtmlElement>.toKotlinx(currentIndent: Int = 0): String =
 fun HtmlAttribute.toKotlinx(owner: HtmlTag? = null): String {
     // remap for kotlinx
     val attrNameLowerCase = attrName.toLowerCase()
-    val attrValue = """"$value""""
+    var attrValue = """"$value""""
     var attrName = when (attrNameLowerCase) {
         "class" -> "classes"
         else -> attrNameLowerCase
@@ -148,6 +148,15 @@ fun HtmlAttribute.toKotlinx(owner: HtmlTag? = null): String {
             "label" -> {
                 when(attrNameLowerCase) {
                     "for" -> attrName = "htmlFor"
+                }
+            }
+
+            "button" -> {
+                when (attrNameLowerCase) {
+                    "type" -> when (attrValue.toLowerCase()) {
+                        "button" -> attrValue = "ButtonType.button"
+                    }
+
                 }
             }
         }
